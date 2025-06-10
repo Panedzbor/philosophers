@@ -8,7 +8,7 @@ static void	check_input(const char *str, int *start, int *end, int *negative);
 static int	ft_isdigit(int c);
 
 __attribute__((nonnull))
-int	ft_atoi(const char *str)
+int	ph_atoi(const char *str)
 {
 	int		num;
 	int		negative;
@@ -20,7 +20,7 @@ int	ft_atoi(const char *str)
 	negative = 0;
 	check_input(str, &start, &end, &negative);
 	if (!(ft_isdigit(str[start])))
-		return (0);
+		return (-1);
 	if (negative == 1)
 		num = substract(str, start, end);
 	else
