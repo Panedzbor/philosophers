@@ -9,4 +9,6 @@
 # include <string.h>
 # include <sys/time.h>
 
+int	ph_atoi(const char *str)__attribute__((nonnull));
+
 #endif
