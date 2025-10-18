@@ -1,13 +1,12 @@
 
 
-#include "philo.h"
+#include "../../philo.h"
 
 static int	substract(const char *str, int start, int end);
 static int	add(const char *str, int start, int end);
 static void	check_input(const char *str, int *start, int *end, int *negative);
 static int	ft_isdigit(int c);
 
-__attribute__((nonnull))
 int	ph_atoi(const char *str)
 {
 	int		num;
@@ -18,6 +17,8 @@ int	ph_atoi(const char *str)
 	start = 0;
 	end = 0;
 	negative = 0;
+	if (!str)
+		return (0);
 	check_input(str, &start, &end, &negative);
 	if (!(ft_isdigit(str[start])))
 		return (-1);
