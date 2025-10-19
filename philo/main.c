@@ -1,17 +1,16 @@
 #include "philo.h"
 
-int main(int argc, char *argv[])
+void    *phil_live(void *id)
 {
-    pthread_t   *threads;
-    int         *ids;
-    int         *args;
-
-    if (!(args = parser(argc, argv, &threads, &ids)))
-        return (1);
-    return (0);
+    //(void)id;
+    if (*(int *)id == 1)
+        printf("let's eat\n");
+    else
+        printf("let's sleep\n");
+    return (NULL);
 }
 
-/* void    join_threads(pthread_t *threads, int num_of_phil)
+void    join_threads(pthread_t *threads, int num_of_phil)
 {
     int i;
 
@@ -33,19 +32,11 @@ void    create_threads(pthread_t *threads, int *ids, int num_of_phil)
         pthread_create(&threads[i], NULL, phil_live, &ids[i]);
         i++;
     }
-} */
-
-void    *phil_live(void *id)
-{
-    //(void)id;
-    if (*(int *)id == 1)
-        printf("let's eat\n");
-    else
-        printf("let's sleep\n");
-    return (NULL);
 }
 
-/* void    create_ids(int *ids, int number_of_philosophers)
+
+
+void    create_ids(int *ids, int number_of_philosophers)
 {
     int i;
 
@@ -55,9 +46,21 @@ void    *phil_live(void *id)
         ids[i] = i + 1;
         i++;
     }
+}
+
+/* static void init_threads(pthread_t *threads, int *ids, int num_of_philosphers)
+{
+    int i;
+
+    i = 0;
+    while (i < num_of_philosphers)
+    {
+        ids[i] = i + 1;
+        pthread_create(&threads[i], NULL, phil_live, &ids[i]);
+        pthread_join(threads[i], NULL);
+        i++;
+    }
 } */
-
-
 
 
 
@@ -69,3 +72,18 @@ void    *phil_live(void *id)
     *v4 = 0;
     *v5 = 0;
 } */
+
+
+int main(int argc, char *argv[])
+{
+    pthread_t   *threads;
+    int         *ids;
+    int         *args;
+
+    if (!(args = parser(argc, argv, &threads, &ids)))
+        return (1);
+    create_ids(ids, args[0]);
+    create_threads(threads, ids, args[0]);
+    join_threads(threads, args[0]);
+    return (0);
+}

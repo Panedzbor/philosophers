@@ -11,8 +11,8 @@
 # include <pthread.h>
 # include <unistd.h>
 
-int *parser(int argc, char *argv[], pthread_t **threads, int **ids);
-int    *process_input(int argc, char *argv[]);
-
+void    ft_putstr_fd(char *s, int fd);
+int     *parser(int argc, char *argv[], pthread_t **threads, int **ids);
+int     ph_atoi(const char *str);
 
 #endif
