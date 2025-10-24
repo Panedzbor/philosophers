@@ -2,11 +2,7 @@
 
 void    *phil_live(void *id)
 {
-    //(void)id;
-    if (*(int *)id == 1)
-        printf("let's eat\n");
-    else
-        printf("let's sleep\n");
+    
     return (NULL);
 }
 
@@ -22,10 +18,12 @@ void    join_threads(pthread_t *threads, int num_of_phil)
     }
 }
 
-void    create_threads(pthread_t *threads, int *ids, int num_of_phil)
+void    create_threads(void *arrs[], int num_of_phil)
 {
+    pthread_t *threads;
     int i;
-
+    
+    threads = (pthread_t *)arrs[0];
     i = 0;
     while (i < num_of_phil)
     {
@@ -34,9 +32,19 @@ void    create_threads(pthread_t *threads, int *ids, int num_of_phil)
     }
 }
 
+void    init_locks(int *forks, int number_of_philosophers)
+{
+    int i;
 
+    i = 0;
+    while (i < number_of_philosophers)
+    {
+        pthread_mutex_init(&forks[i], NULL);
+        i++;
+    }
+}
 
-void    create_ids(int *ids, int number_of_philosophers)
+void    init_ids(int *ids, int number_of_philosophers)
 {
     int i;
 
@@ -48,42 +56,33 @@ void    create_ids(int *ids, int number_of_philosophers)
     }
 }
 
-/* static void init_threads(pthread_t *threads, int *ids, int num_of_philosphers)
+void init_mem(void *mem[])
 {
     int i;
 
     i = 0;
-    while (i < num_of_philosphers)
+    while (i < D_PTRS)
     {
-        ids[i] = i + 1;
-        pthread_create(&threads[i], NULL, phil_live, &ids[i]);
-        pthread_join(threads[i], NULL);
+        mem[i] = NULL;
         i++;
     }
-} */
-
-
-
-/* void    init_variables(int *v1, int *v2, int *v3, int *v4, int *v5)
-{
-    *v1 = 0;
-    *v2 = 0;
-    *v3 = 0;
-    *v4 = 0;
-    *v5 = 0;
-} */
-
+}
 
 int main(int argc, char *argv[])
 {
-    pthread_t   *threads;
-    int         *ids;
-    int         *args;
+    t_philo ph_struct;
+    t_curph *philosophers;
+    void *mem[D_PTRS];
 
-    if (!(args = parser(argc, argv, &threads, &ids)))
+    init_mem(mem);
+    if (!(ph_struct.args = parser(argc, argv, mem)))
         return (1);
-    create_ids(ids, args[0]);
-    create_threads(threads, ids, args[0]);
+    if (!(philosophers = mem_allocator(ph_struct.args, ph_struct, mem)))
+        return (2);
+    init_locks(forks, args[0]);
+    init_ids(ids, args[0]);
+    create_threads(arrs, args[0]);
     join_threads(threads, args[0]);
+    
     return (0);
 }

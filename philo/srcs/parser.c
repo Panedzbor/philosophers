@@ -1,18 +1,15 @@
 #include "../philo.h"
 
 static bool         is_correct_args_num(int argc);
-static int          *validate_input(int argc, char *argv[]);
-static pthread_t    *thalloc(int number_of_philosophers, int **ids, int **args);
+static int          *validate_input(int argc, char *argv[], void *mem[]);
 
-int *parser(int argc, char *argv[], pthread_t **threads, int **ids)
+int *parser(int argc, char *argv[], void *mem[])
 {
     int *args;
     
     if (!is_correct_args_num(argc))
         return (NULL);
-    if (!(args = validate_input(argc, argv)))
-        return (NULL);
-    if (!(*threads = thalloc(args[0], ids, &args)))
+    if (!(args = validate_input(argc, argv, mem)))
         return (NULL);
     return (args);
 }
@@ -27,7 +24,7 @@ static bool is_correct_args_num(int argc)
     return (1);
 }
 
-static int    *validate_input(int argc, char *argv[])
+static int    *validate_input(int argc, char *argv[], void *mem[])
 {
     int *args;
     int i;
@@ -39,6 +36,7 @@ static int    *validate_input(int argc, char *argv[])
         ft_putstr_fd("Error during memory allocation\n", STDERR_FILENO);
         return (NULL);
     }
+    mem[0] = args;
     i = 1;
     while (i < argc)
     {
@@ -53,30 +51,5 @@ static int    *validate_input(int argc, char *argv[])
         i++;
     }
     return (args);
-}
-
-static pthread_t   *thalloc(int number_of_philosophers, int **ids, int **args)
-{
-    pthread_t   *threads;
-    int         *ids_temp;
-
-    threads = (pthread_t *)malloc(number_of_philosophers * sizeof(pthread_t));
-    if (!threads)
-    {
-        ft_putstr_fd("Error: Memory allocation for threads failed\n", STDERR_FILENO);
-        free(*args);
-        return (NULL);
-    }
-    ids_temp = (int *)malloc(number_of_philosophers * sizeof(int));
-    if (!ids_temp)
-    {
-        ft_putstr_fd("Error: Memory allocation for ids failed\n", STDERR_FILENO);
-        free(threads);
-        free(*args);
-        return (NULL);
-    }
-    *ids = ids_temp;
-    ids_temp = NULL;
-    return (threads);
 }
 
