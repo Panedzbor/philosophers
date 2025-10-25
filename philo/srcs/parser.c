@@ -19,9 +19,9 @@ static bool is_correct_args_num(int argc)
     if (argc < 5 || argc > 6)
     {
         ft_putstr_fd("Error: Wrong number of arguments entered\n", STDERR_FILENO);
-        return (0);
+        return (false);
     }
-    return (1);
+    return (true);
 }
 
 static int    *validate_input(int argc, char *argv[], void *mem[])

@@ -1,14 +1,5 @@
 #include "philo.h"
 
-void    *phil_live(void *phil)
-{
-    struct timeval now;
-    struct timeval death;
-
-    
-    return (NULL);
-}
-
 void    join_threads(pthread_t *threads, int num_of_phil)
 {
     int i;
@@ -33,6 +24,7 @@ void    create_threads(t_curph philosophers[], int num_of_phil)
         pthread_create(&threads[i], NULL, phil_live, (void *)&philosophers[i]);
         i++;
     }
+    pthread_create(&philosophers[0].ph_struct->death_check, NULL, death_check, (void *)&philosophers[0]);
 }
 
 int main(int argc, char *argv[])
@@ -41,9 +33,11 @@ int main(int argc, char *argv[])
     t_curph *philosophers;
     void *mem[D_PTRS];
 
+    gettimeofday(&ph_struct.start, NULL);
     init_mem(mem);
     if (!(ph_struct.args = parser(argc, argv, mem)))
         return (1);
+    convert_args_us(&ph_struct);
     if (!(philosophers = mem_allocator(ph_struct.args, ph_struct, mem)))
         return (2);
     init_locks(ph_struct.mutexes, ph_struct.args[0]);
