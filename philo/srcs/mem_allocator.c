@@ -5,20 +5,6 @@ static pthread_mutex_t *alloc_mutexes(int number_of_philosophers, void *mem[]);
 static int             *alloc_ids(int number_of_philosophers, void *mem[]);
 static t_curph          *alloc_phils(int number_of_philosophers, void *mem[]);
 
-void *mem_cleaner(void *mem[])
-{
-    int i;
-
-    i = 0;
-    while (i < D_PTRS)
-    {
-        if (mem[i])
-            free(mem[i]);
-        i++;
-    }
-    return (NULL);
-}
-
 t_curph *mem_allocator(int *args, t_philo ph_struct, void *mem[])
 {
     pthread_t *threads;

@@ -16,15 +16,16 @@
 typedef struct s_philo
 {
     int *args;
-    pthread_t *threads;
+    pthread_t *threads;// ?: why not separately for each phil?
     pthread_mutex_t *mutexes;
-    int *ids;
+    int *ids;// ?: needed?
 } t_philo;
 
 typedef struct s_current_philo
 {
     int id;
-    t_philo struph;
+    
+    t_philo *ph_struct;
 } t_curph;
 
 // typedef struct s_mem
@@ -34,6 +35,11 @@ typedef struct s_current_philo
 // } t_mem;
 
 void    ft_putstr_fd(char *s, int fd);
+t_curph *mem_allocator(int *args, t_philo ph_struct, void *mem[]);
+void    *mem_cleaner(void *mem[]);
+void    init_ids(int *ids, int number_of_philosophers);
+void    init_locks(int *forks, int number_of_philosophers);
+void    init_mem(void *mem[]);
 int     *parser(int argc, char *argv[], void *mem[]);
 int     ph_atoi(const char *str);
 
