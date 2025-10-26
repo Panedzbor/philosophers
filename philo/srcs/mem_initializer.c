@@ -12,7 +12,7 @@ void init_mem(void *mem[])
     }
 }
 
-void    init_locks(int *forks, int number_of_philosophers)
+void    init_locks(pthread_mutex_t *forks, int number_of_philosophers)
 {
     int i;
 
@@ -36,6 +36,21 @@ void    init_ids(int *ids, int number_of_philosophers)
     }
 }
 
+t_action define_start_action(int id)
+{
+    if (id % 2 == 0)
+        return (EAT);
+    return (SLEEP);
+}
+
+void define_forks(t_curph *philosopher, int number_of_philosophers)
+{
+    philosopher->rfork = philosopher->id - 1;
+    philosopher->lfork = philosopher->id;
+    if (philosopher->id == number_of_philosophers)
+        philosopher->lfork = 0;
+}
+
 void    init_philosophers(t_curph philosophers[], t_philo *ph_struct)
 {
     int number_of_philosophers;
@@ -46,6 +61,8 @@ void    init_philosophers(t_curph philosophers[], t_philo *ph_struct)
     while (i < number_of_philosophers)
     {
         philosophers[i].id = i + 1;
+        define_forks(&philosophers[i], number_of_philosophers);
+        philosophers[i].next_action = define_start_action(i + 1);
         philosophers[i].ph_struct = ph_struct;
         i++;
     }

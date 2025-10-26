@@ -1,5 +1,10 @@
 #include "../philo.h"
 
+void phil_take_forks(t_curph *phil);
+void phil_eat(t_curph *phil);
+void phil_sleep(t_curph *phil);
+void phil_think(t_curph *phil);
+
 void    *phil_live(void *phil_void)
 {
     t_curph *phil;
@@ -23,7 +28,7 @@ void    *phil_live(void *phil_void)
 void phil_take_forks(t_curph *phil)
 {
     pthread_mutex_lock(&phil->ph_struct->mutexes[phil->lfork]);
-    printf("%s has taken a fork\n", phil->id);
+    printf("%d has taken a fork\n", phil->id);
     pthread_mutex_lock(&phil->ph_struct->mutexes[phil->rfork]);
 }
 
@@ -35,7 +40,7 @@ void reset_death(struct timeval *tv, int ms)
 
 void phil_eat(t_curph *phil)
 {
-    printf("%s is eating\n", phil->id);
+    printf("%d is eating\n", phil->id);
     usleep(phil->ph_struct->args_us[1]);
     pthread_mutex_unlock(&phil->ph_struct->mutexes[phil->lfork]);
     pthread_mutex_unlock(&phil->ph_struct->mutexes[phil->rfork]);
@@ -46,13 +51,13 @@ void phil_eat(t_curph *phil)
 
 void phil_sleep(t_curph *phil)
 {
-    printf("%s is sleeping\n", phil->id);
+    printf("%d is sleeping\n", phil->id);
     usleep(phil->ph_struct->args_us[2]);
     phil->next_action = THINK;
 }
 
 void phil_think(t_curph *phil)
 {
-    printf("%s is thinking\n");
+    printf("%d is thinking\n", phil->id);
     phil->next_action = EAT;
 }

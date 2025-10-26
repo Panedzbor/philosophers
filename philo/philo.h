@@ -31,6 +31,12 @@ typedef enum e_next_action
     THINK
 } t_action;
 
+typedef enum e_status
+{
+    ALIVE,
+    DEAD
+} t_status;
+
 typedef struct s_current_philo
 {
     int id;
@@ -38,6 +44,7 @@ typedef struct s_current_philo
     int lfork;
     int rfork;
     struct timeval death;
+    t_status status;//init
     t_action next_action;//init
     t_philo *ph_struct;
 } t_curph;
@@ -51,11 +58,12 @@ typedef struct s_current_philo
 void convert_args_us(t_philo *ph_struct);
 int convert_ms_us(int ms);
 int convert_us_ms(int us);
+void *death_checker(void *phil_void);
 void    ft_putstr_fd(char *s, int fd);
-t_curph *mem_allocator(int *args, t_philo ph_struct, void *mem[]);
+t_curph *mem_allocator(int *args, t_philo *ph_struct, void *mem[]);
 void    *mem_cleaner(void *mem[]);
 void    init_ids(int *ids, int number_of_philosophers);
-void    init_locks(int *forks, int number_of_philosophers);
+void    init_locks(pthread_mutex_t *forks, int number_of_philosophers);
 void    init_mem(void *mem[]);
 void    init_philosophers(t_curph philosophers[], t_philo *ph_struct);
 int     *parser(int argc, char *argv[], void *mem[]);
