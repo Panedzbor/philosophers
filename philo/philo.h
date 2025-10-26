@@ -57,11 +57,13 @@ typedef struct s_current_philo
 // } t_mem;
 
 void convert_args_us(t_philo *ph_struct);
-int convert_ms_us(int ms);
-int convert_us_ms(int us);
+long convert_ms_us(long ms);
+long convert_sec_ms(long sec);
+long convert_us_ms(long us);
 void    create_threads(t_curph philosophers[], int num_of_phil);
 void *death_checker(void *phil_void);
 void    ft_putstr_fd(char *s, int fd);
+long generate_timestamp(t_curph *phil);
 void    join_threads(t_philo ph_struct, int num_of_phil);
 t_curph *mem_allocator(int *args, t_philo *ph_struct, void *mem[]);
 void    *mem_cleaner(void *mem[]);

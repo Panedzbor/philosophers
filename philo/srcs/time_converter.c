@@ -16,12 +16,17 @@ void convert_args_us(t_philo *ph_struct)
     }
 }
 
-int convert_ms_us(int ms)
+long convert_ms_us(long ms)
 {
     return (ms * 1000);
 }
 
-int convert_us_ms(int us)
+long convert_us_ms(long us)
 {
     return (us / 1000);
+}
+
+long convert_sec_ms(long sec)
+{
+    return (sec * 1000);
 }

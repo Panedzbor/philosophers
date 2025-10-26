@@ -57,14 +57,17 @@ void *death_checker(void *phil_void)
         while (i < number_of_philosophers)
         {
             gettimeofday(&now, NULL);
-            if (timeval_cmp(now, philosophers->death) >= 0)
+            if (timeval_cmp(now, philosophers[i].death) >= 0)
             {
                 philosophers[i].status = DEAD;
+                printf("%04ld %d died\n", generate_timestamp(philosophers), philosophers->id);
                 detach_threads(philosophers->ph_struct->threads, number_of_philosophers);
                 return (NULL);
             }
+            //printf("now: %ld < death: %ld\n", now.tv_sec - philosophers->ph_struct->start.tv_sec, philosophers->death.tv_sec - philosophers->ph_struct->start.tv_sec);
             i++;
         }
     }
+    printf("End of simulation: philosophers go partying\n");
     return (NULL);
 }

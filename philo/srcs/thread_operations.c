@@ -22,7 +22,7 @@ void    join_threads(t_philo ph_struct, int num_of_phil)
     i = 0;
     while (i < num_of_phil)
     {
-        pthread_join(ph_struct.threads[i], NULL);
+        //pthread_join(ph_struct.threads[i], NULL);
         i++;
     }
     pthread_join(ph_struct.death_check, NULL);

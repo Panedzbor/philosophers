@@ -53,13 +53,13 @@ void define_forks(t_curph *philosopher, int number_of_philosophers)
 
 void define_death_time(t_curph *philosopher)
 {
-    struct timeval now;
+    //struct timeval now;
     int time_to_die;
 
-    gettimeofday(&now, NULL);
+    //gettimeofday(&now, NULL);
     time_to_die = philosopher->ph_struct->args[1];
-    philosopher->death.tv_sec = now.tv_sec;
-    philosopher->death.tv_usec = now.tv_usec;
+    //philosopher->death.tv_sec = now.tv_sec;
+    //philosopher->death.tv_usec = now.tv_usec;
     reset_death(&philosopher->death, time_to_die);
 }
 

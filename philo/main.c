@@ -18,6 +18,6 @@ int main(int argc, char *argv[])
     init_philosophers(philosophers, &ph_struct);
     create_threads(philosophers, ph_struct.args[0]);
     join_threads(ph_struct, ph_struct.args[0]);
-    printf("finish\n");
+    //printf("finish\n");
     return (0);
 }
