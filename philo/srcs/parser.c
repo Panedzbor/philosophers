@@ -3,15 +3,14 @@
 static bool         is_correct_args_num(int argc);
 static int          *validate_input(int argc, char *argv[], void *mem[]);
 
-int *parser(int argc, char *argv[], void *mem[])
+int parser(int argc, char *argv[], void *mem[], t_philo *ph_struct)
 {
-    int *args;
-    
     if (!is_correct_args_num(argc))
-        return (NULL);
-    if (!(args = validate_input(argc, argv, mem)))
-        return (NULL);
-    return (args);
+        return (0);
+    if (!(ph_struct->args = validate_input(argc, argv, mem)))
+        return (0);
+    ph_struct->argc = argc - 1;
+    return (1);
 }
 
 static bool is_correct_args_num(int argc)

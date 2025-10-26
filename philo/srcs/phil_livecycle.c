@@ -8,9 +8,14 @@ void phil_think(t_curph *phil);
 void    *phil_live(void *phil_void)
 {
     t_curph *phil;
+    int meals_to_end;
 
     phil = (t_curph *)phil_void;
-    while (!phil->ph_struct->args[4] || phil->meals < phil->ph_struct->args[4]) // ?: 1 or until status is dead !: dereferencing index 4!
+    meals_to_end = -1;
+    if (phil->ph_struct->argc == 5)
+        meals_to_end = phil->ph_struct->args[4];
+    while ((meals_to_end < 0 || phil->meals < meals_to_end) 
+            && phil->status == ALIVE)
     {
         if (phil->next_action == EAT)
         {
@@ -32,10 +37,10 @@ void phil_take_forks(t_curph *phil)
     pthread_mutex_lock(&phil->ph_struct->mutexes[phil->rfork]);
 }
 
-void reset_death(struct timeval *tv, int ms)
+void reset_death(struct timeval *tv, int time_to_die)
 {
-    tv->tv_sec = ms / 1000;
-    tv->tv_usec = (ms % 1000) * 1000;
+    tv->tv_sec += time_to_die / 1000;
+    tv->tv_usec += (time_to_die % 1000) * 1000;
 }
 
 void phil_eat(t_curph *phil)

@@ -2,27 +2,27 @@
 
 static pthread_t       *alloc_threads(int number_of_philosophers, void *mem[]);
 static pthread_mutex_t *alloc_mutexes(int number_of_philosophers, void *mem[]);
-static int             *alloc_ids(int number_of_philosophers, void *mem[]);
+//static int             *alloc_ids(int number_of_philosophers, void *mem[]);
 static t_curph          *alloc_phils(int number_of_philosophers, void *mem[]);
 
 t_curph *mem_allocator(int *args, t_philo *ph_struct, void *mem[])
 {
     pthread_t *threads;
     pthread_mutex_t *locks;
-    int *ids;
+    //int *ids;
     t_curph *philosophers;
 
     if (!(threads = alloc_threads(args[0], mem)))
         return (mem_cleaner(mem));
     if (!(locks = alloc_mutexes(args[0], mem)))
         return (mem_cleaner(mem));
-    if (!(ids = alloc_ids(args[0], mem)))
-        return (mem_cleaner(mem));
+    /* if (!(ids = alloc_ids(args[0], mem)))
+        return (mem_cleaner(mem)); */
     if (!(philosophers = alloc_phils(args[0], mem)))
         return (mem_cleaner(mem));
     ph_struct->threads = threads;
     ph_struct->mutexes = locks;
-    ph_struct->ids = ids;
+    //ph_struct->ids = ids;
     return (philosophers);
 }
 
@@ -54,7 +54,7 @@ static pthread_mutex_t *alloc_mutexes(int number_of_philosophers, void *mem[])
     return (locks);
 }
 
-static int *alloc_ids(int number_of_philosophers, void *mem[])
+/* static int *alloc_ids(int number_of_philosophers, void *mem[])
 {
     int *ids;
     
@@ -66,7 +66,7 @@ static int *alloc_ids(int number_of_philosophers, void *mem[])
     }
     mem[3] = (void *)ids;
     return (ids);
-}
+} */
 
 static t_curph *alloc_phils(int number_of_philosophers, void *mem[])
 {
