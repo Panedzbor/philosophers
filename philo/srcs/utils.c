@@ -22,7 +22,7 @@ void reset_death(struct timeval *tv, int time_to_die)
     tv->tv_sec = now.tv_sec + time_to_die / 1000;
     tv->tv_usec = now.tv_usec + (time_to_die % 1000) * 1000;
     if (tv->tv_usec >= 1000000) 
-    {  // Add overflow handling
+    {
         tv->tv_sec++;
         tv->tv_usec -= 1000000;
     }

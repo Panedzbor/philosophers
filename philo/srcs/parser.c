@@ -39,15 +39,15 @@ static int    *validate_input(int argc, char *argv[], void *mem[])
     i = 1;
     while (i < argc)
     {
-        temp = ph_atoi(argv[i]); // ?: are non numeric values correctly handled?
+        temp = ph_atoi(argv[i]);
         if (temp < 0)
         {
-            ft_putstr_fd("Invalid input: negative values\n", STDERR_FILENO);
+            ft_putstr_fd("Invalid input: negative or non-numeric values\n", 
+                STDERR_FILENO);
             mem_cleaner(mem);
             return (NULL);
         }
-        args[i - 1] = temp;
-        i++;
+        args[i++ - 1] = temp;
     }
     return (args);
 }
