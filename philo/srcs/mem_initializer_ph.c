@@ -15,7 +15,7 @@ void    init_philosophers(t_curph philosophers[], t_philo *ph_struct, void *thre
     {
         philosophers[i].id = i + 1;
         philosophers[i].meals = 0;
-        philosophers[i].thread = (pthread_t *)&threads[i];
+        philosophers[i].thread = &((pthread_t *)threads)[i];
         philosophers[i].next_action = define_start_action(i + 1);
         philosophers[i].ph_struct = ph_struct;
         philosophers[i].status = ALIVE;

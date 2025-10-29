@@ -1,5 +1,7 @@
 #include "../philo.h"
 
+static bool all_fed_up(t_curph philosophers[], int number_of_philosophers);
+
 void *death_checker(void *phil_void)
 {
     t_curph         *philosophers;
@@ -19,7 +21,7 @@ void *death_checker(void *phil_void)
             {
                 philosophers[i].status = DEAD;
                 printf("%04ld %d died\n", generate_timestamp(philosophers), philosophers->id);
-                pthread_detach(philosophers[i].thread);
+                pthread_detach(*philosophers[i].thread);
                 return (NULL);
             }
             i++;
