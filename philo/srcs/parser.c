@@ -10,6 +10,7 @@ int parser(int argc, char *argv[], void *mem[], t_philo *ph_struct)
     if (!(ph_struct->args = validate_input(argc, argv, mem)))
         return (0);
     ph_struct->argc = argc - 1;
+    ph_struct->end_of_simulation = false;
     return (1);
 }
 

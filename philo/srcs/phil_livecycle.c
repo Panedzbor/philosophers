@@ -14,8 +14,10 @@ void    *phil_live(void *phil_void)
     meals_to_end = -1;
     if (phil->ph_struct->argc == 5)
         meals_to_end = phil->ph_struct->args[4];
+    if (phil->id % 2 == 0)
+        usleep(50);
     while ((meals_to_end < 0 || phil->meals < meals_to_end) 
-            && phil->status == ALIVE)
+            && phil->ph_struct->end_of_simulation == false)
     {
         if (phil->next_action == EAT)
         {

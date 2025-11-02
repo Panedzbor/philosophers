@@ -12,3 +12,15 @@ void *mem_cleaner(void *mem[])
     }
     return (NULL);
 }
+
+void destroy_mutexes(t_curph *phil)
+{
+    int i;
+
+    i = 0;
+    while (i < phil->ph_struct->args[0])
+    {
+        pthread_mutex_destroy(&phil->ph_struct->mutexes[i]);
+        i++;
+    }
+}

@@ -15,6 +15,7 @@
 
 typedef struct s_philo
 {
+    bool            end_of_simulation;
     int             *args;
     int             argc;
     pthread_mutex_t *mutexes;
@@ -29,11 +30,11 @@ typedef enum e_next_action
     THINK
 } t_action;
 
-typedef enum e_status
+/* typedef enum e_status
 {
     ALIVE,
     DEAD
-} t_status;
+} t_status; */
 
 typedef struct s_current_philo
 {
@@ -45,7 +46,7 @@ typedef struct s_current_philo
     struct timeval  death;
     t_action        next_action;
     t_philo         *ph_struct;
-    t_status        status;
+    //t_status        status;
 } t_curph;
 
 long    convert_ms_us(long ms);
@@ -53,6 +54,8 @@ long    convert_sec_ms(long sec);
 long    convert_us_ms(long us);
 void    create_threads(t_curph philosophers[], int num_of_phil);
 void    *death_checker(void *phil_void);
+void    destroy_mutexes(t_curph *phil);
+void    finish_threads(t_curph phil[]);
 void    ft_putstr_fd(char *s, int fd);
 long    generate_timestamp(t_curph *phil);
 t_curph *mem_allocator(int *args, t_philo *ph_struct, void *mem[]);

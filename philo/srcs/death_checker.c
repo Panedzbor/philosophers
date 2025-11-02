@@ -1,6 +1,7 @@
 #include "../philo.h"
 
 static bool all_fed_up(t_curph philosophers[], int number_of_philosophers);
+static void end_simulation(t_curph philosophers[]);
 
 void *death_checker(void *phil_void)
 {
@@ -19,14 +20,14 @@ void *death_checker(void *phil_void)
             gettimeofday(&now, NULL);
             if (timeval_cmp(now, philosophers[i].death) >= 0)
             {
-                philosophers[i].status = DEAD;
+                end_simulation(philosophers);
                 printf("%04ld %d died\n", generate_timestamp(philosophers), philosophers->id);
-                pthread_detach(*philosophers[i].thread);
                 return (NULL);
             }
             i++;
         }
     }
+    end_simulation(philosophers);
     printf("End of simulation: philosophers go partying 🥳\n");
     return (NULL);
 }
@@ -47,4 +48,10 @@ static bool all_fed_up(t_curph philosophers[], int number_of_philosophers)
         i++;
     }
     return (true);
+}
+
+static void end_simulation(t_curph philosophers[])
+{
+    philosophers->ph_struct->end_of_simulation = true;
+    finish_threads(philosophers);
 }

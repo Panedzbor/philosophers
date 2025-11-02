@@ -16,11 +16,9 @@ int main(int argc, char *argv[])
     init_philosophers(philosophers, &ph_struct, mem[1]);
     create_threads(philosophers, ph_struct.args[0]);
     pthread_join(ph_struct.death_check, NULL);
+    destroy_mutexes(philosophers);
     mem_cleaner(mem);
     return (0);
 }
 
-
-//reafactoring
-//leaks
 //testing
