@@ -1,6 +1,6 @@
 #include "../philo.h"
 
-static void phil_take_forks(t_curph *phil);
+static int phil_take_forks(t_curph *phil);
 static void phil_eat(t_curph *phil);
 static void phil_sleep(t_curph *phil);
 static void phil_think(t_curph *phil);
@@ -15,14 +15,16 @@ void    *phil_live(void *phil_void)
     if (phil->ph_struct->argc == 5)
         meals_to_end = phil->ph_struct->args[4];
     if (phil->id % 2 == 0)
-        usleep(50);
+        usleep(200);
     while ((meals_to_end < 0 || phil->meals < meals_to_end) 
             && phil->ph_struct->end_of_simulation == false)
     {
         if (phil->next_action == EAT)
         {
-            phil_take_forks(phil);
-            phil_eat(phil);
+            if (phil_take_forks(phil))
+                phil_eat(phil);
+            else
+                phil->ph_struct->end_of_simulation = true;
         }
         else if (phil->next_action == SLEEP)
             phil_sleep(phil);
@@ -32,17 +34,23 @@ void    *phil_live(void *phil_void)
     return (NULL);
 }
 
-static void phil_take_forks(t_curph *phil)
+static int phil_take_forks(t_curph *phil)
 {
+    int number_of_philosophers;
+    
+    number_of_philosophers = phil->ph_struct->args[0];
     pthread_mutex_lock(&phil->ph_struct->mutexes[phil->lfork]);
     printf("%04ld %d has taken a fork\n", generate_timestamp(phil),phil->id);
+    if (number_of_philosophers <= 1)
+        return (0);
     pthread_mutex_lock(&phil->ph_struct->mutexes[phil->rfork]);
+    return (1);
 }
 
 static void phil_eat(t_curph *phil)
 {
-    reset_death(&phil->death, phil->ph_struct->args[1]);
     printf("%04ld %d is eating\n", generate_timestamp(phil), phil->id);
+    reset_death(&phil->death, phil->ph_struct->args[1]);
     usleep(convert_ms_us(phil->ph_struct->args[2]));
     pthread_mutex_unlock(&phil->ph_struct->mutexes[phil->lfork]);
     pthread_mutex_unlock(&phil->ph_struct->mutexes[phil->rfork]);

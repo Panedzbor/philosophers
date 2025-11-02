@@ -26,6 +26,7 @@ void *death_checker(void *phil_void)
             }
             i++;
         }
+        //usleep(500);
     }
     end_simulation(philosophers);
     printf("End of simulation: philosophers go partying 🥳\n");
