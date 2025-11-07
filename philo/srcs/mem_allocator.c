@@ -16,7 +16,7 @@ t_curph *mem_allocator(int *args, t_philo *ph_struct, void *mem[])
         return (mem_cleaner(mem));
     if (!(philosophers = alloc_phils(args[0], mem)))
         return (mem_cleaner(mem));
-    ph_struct->mutexes = locks;
+    ph_struct->forks = locks;
     return (philosophers);
 }
 

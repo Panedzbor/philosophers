@@ -14,11 +14,12 @@ long generate_timestamp(t_curph *phil)
     return (ms); 
 }
 
-void reset_death(struct timeval *tv, int time_to_die)
+void reset_death(struct timeval *tv, int time_to_die, pthread_mutex_t *ph_mutex)
 {
     struct timeval now;
     
     gettimeofday(&now, NULL);
+    pthread_mutex_lock(ph_mutex);
     tv->tv_sec = now.tv_sec + time_to_die / 1000;
     tv->tv_usec = now.tv_usec + (time_to_die % 1000) * 1000;
     if (tv->tv_usec >= 1000000) 
@@ -26,17 +27,23 @@ void reset_death(struct timeval *tv, int time_to_die)
         tv->tv_sec++;
         tv->tv_usec -= 1000000;
     }
+    pthread_mutex_unlock(ph_mutex);
 }
 
-int timeval_cmp(struct timeval tv1, struct timeval tv2)
+int timeval_cmp(struct timeval now, t_curph *phil)
 {
-    if (tv1.tv_sec < tv2.tv_sec)
+    struct timeval death;
+
+    pthread_mutex_lock(&phil->ph_mutex);
+    death = phil->death;
+    pthread_mutex_unlock(&phil->ph_mutex);
+    if (now.tv_sec < death.tv_sec)
         return (-1);
-    else if (tv1.tv_sec > tv2.tv_sec)
+    else if (now.tv_sec > death.tv_sec)
         return (1);
-    if (tv1.tv_usec < tv2.tv_usec)
+    if (now.tv_usec < death.tv_usec)
         return (-1);
-    else if (tv1.tv_usec > tv2.tv_usec)
+    else if (now.tv_usec > death.tv_usec)
         return (1);
     return (0);
 }

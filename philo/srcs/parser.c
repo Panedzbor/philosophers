@@ -11,6 +11,8 @@ int parser(int argc, char *argv[], void *mem[], t_philo *ph_struct)
         return (0);
     ph_struct->argc = argc - 1;
     ph_struct->end_of_simulation = false;
+    pthread_mutex_init(&ph_struct->eos, NULL);
+    pthread_mutex_inin(&ph_struct->print, NULL);
     return (1);
 }
 

@@ -21,6 +21,7 @@ void    init_philosophers(t_curph philosophers[], t_philo *ph_struct, void *thre
         //philosophers[i].status = ALIVE;
         define_forks(&philosophers[i], number_of_philosophers);
         define_death_time(&philosophers[i]);
+        pthread_mutex_init(&philosophers[i].ph_mutex, NULL);
         i++;
     }
 }

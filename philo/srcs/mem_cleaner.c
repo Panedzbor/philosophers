@@ -20,7 +20,10 @@ void destroy_mutexes(t_curph *phil)
     i = 0;
     while (i < phil->ph_struct->args[0])
     {
-        pthread_mutex_destroy(&phil->ph_struct->mutexes[i]);
+        pthread_mutex_destroy(&phil->ph_struct->forks[i]);
+        pthread_mutex_destroy(&phil->ph_mutex);
         i++;
     }
+    pthread_mutex_destroy(&phil->ph_struct->eos);
+    pthread_mutex_destroy(&phil->ph_struct->print);
 }

@@ -18,10 +18,10 @@ void *death_checker(void *phil_void)
         while (i < number_of_philosophers)
         {
             gettimeofday(&now, NULL);
-            if (timeval_cmp(now, philosophers[i].death) >= 0)
+            if (timeval_cmp(now, &philosophers[i]) >= 0)
             {
                 end_simulation(philosophers);
-                printf("%04ld %d died\n", generate_timestamp(philosophers), philosophers->id);
+                mutex_print(DIE, &philosophers[i]);
                 return (NULL);
             }
             i++;
@@ -29,7 +29,7 @@ void *death_checker(void *phil_void)
         //usleep(500);
     }
     end_simulation(philosophers);
-    printf("End of simulation: philosophers go partying 🥳\n");
+    mutex_print(END, philosophers);
     return (NULL);
 }
 
@@ -44,7 +44,7 @@ static bool all_fed_up(t_curph philosophers[], int number_of_philosophers)
     i = 0;
     while (i < number_of_philosophers)
     {
-        if (philosophers[i].meals < meals_to_eat)
+        if (get_meals(philosophers[i]) < meals_to_eat)
             return (false);
         i++;
     }
@@ -53,6 +53,6 @@ static bool all_fed_up(t_curph philosophers[], int number_of_philosophers)
 
 static void end_simulation(t_curph philosophers[])
 {
-    philosophers->ph_struct->end_of_simulation = true;
+    set_end_of_simulation(philosophers->ph_struct);
     finish_threads(philosophers);
 }

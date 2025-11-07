@@ -15,10 +15,12 @@
 
 typedef struct s_philo
 {
-    bool            end_of_simulation;
+    bool            end_of_simulation;//mutex
     int             *args;
     int             argc;
-    pthread_mutex_t *mutexes;
+    pthread_mutex_t eos;
+    pthread_mutex_t *forks;
+    pthread_mutex_t print;
     pthread_t       death_check;
     struct timeval  start;
 } t_philo;
@@ -30,6 +32,16 @@ typedef enum e_next_action
     THINK
 } t_action;
 
+typedef enum e_print_message
+{
+    FORK,
+    EATS,
+    SLEEPS,
+    THINKS,
+    DIE,
+    END
+} t_print;
+
 /* typedef enum e_status
 {
     ALIVE,
@@ -39,12 +51,13 @@ typedef enum e_next_action
 typedef struct s_current_philo
 {
     int             id;
-    int             meals;
+    int             meals;//mutex
     int             lfork;
     int             rfork;
+    pthread_mutex_t ph_mutex;
     pthread_t       *thread;
-    struct timeval  death;
-    t_action        next_action;
+    struct timeval  death;//mutex
+    t_action        next_action;//remove
     t_philo         *ph_struct;
     //t_status        status;
 } t_curph;
@@ -66,7 +79,7 @@ void    init_philosophers(t_curph philosophers[], t_philo *ph_struct, void *thre
 int     parser(int argc, char *argv[], void *mem[], t_philo *ph_struct);
 int     ph_atoi(const char *str);
 void    *phil_live(void *phil_void);
-void    reset_death(struct timeval *tv, int time_to_die);
-int     timeval_cmp(struct timeval tv1, struct timeval tv2);
+void    reset_death(struct timeval *tv, int time_to_die, pthread_mutex_t *ph_mutex);
+int     timeval_cmp(struct timeval now, t_curph *phil);
 
 #endif

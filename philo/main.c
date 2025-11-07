@@ -12,7 +12,7 @@ int main(int argc, char *argv[])
         return (1);
     if (!(philosophers = mem_allocator(ph_struct.args, &ph_struct, mem)))
         return (2);
-    init_locks(ph_struct.mutexes, ph_struct.args[0]);
+    init_locks(ph_struct.forks, ph_struct.args[0]);//forks
     init_philosophers(philosophers, &ph_struct, mem[1]);
     create_threads(philosophers, ph_struct.args[0]);
     pthread_join(ph_struct.death_check, NULL);
