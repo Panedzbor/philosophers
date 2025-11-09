@@ -16,9 +16,14 @@ void    init_philosophers(t_curph philosophers[], t_philo *ph_struct, void *thre
         philosophers[i].meals = 0;
         philosophers[i].thread = &((pthread_t *)threads)[i];
         philosophers[i].ph_struct = ph_struct;
+        /* philosophers[i].last_meal.tv_sec = 0;//refactor
+        philosophers[i].last_meal.tv_usec = 0;//refactor */
+        philosophers[i].last_meal = ph_struct->start;
         define_forks(&philosophers[i], number_of_philosophers);
         define_death_time(&philosophers[i]);
-        pthread_mutex_init(&philosophers[i].ph_mutex, NULL);
+        pthread_mutex_init(&philosophers[i].mutx_meals, NULL);
+        pthread_mutex_init(&philosophers[i].mutx_death, NULL);
+        pthread_mutex_init(&philosophers[i].mutx_last_meal, NULL);
         i++;
     }
 }
@@ -36,5 +41,5 @@ static void define_death_time(t_curph *philosopher)
     int time_to_die;
 
     time_to_die = philosopher->ph_struct->args[1];
-    reset_death(&philosopher->death, time_to_die, &philosopher->ph_mutex);
+    reset_death(&philosopher->death, time_to_die, &philosopher->mutx_death, philosopher);
 }

@@ -24,6 +24,9 @@ $(OBJ_DIR)/%.o: %.c $(HEADER)
 	@mkdir -p $(dir $@)
 	$(CC) $(CFLAGS) -c $< -o $@
 
+test:
+	$(CC) $(TFLAGS) $(SRC) -o $(NAME)
+
 clean:
 	rm -rf $(OBJ_DIR)
 

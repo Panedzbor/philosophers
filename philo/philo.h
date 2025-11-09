@@ -41,14 +41,18 @@ typedef struct s_current_philo
     int             meals;
     int             lfork;
     int             rfork;
-    pthread_mutex_t ph_mutex;
+    pthread_mutex_t mutx_death;
+    pthread_mutex_t mutx_meals;
+    pthread_mutex_t mutx_last_meal;
     pthread_t       *thread;
     struct timeval  death;
+    struct timeval  last_meal;
     t_philo         *ph_struct;
 } t_curph;
 
 long    convert_ms_us(long ms);
 long    convert_sec_ms(long sec);
+long long convert_timeval_ms(struct timeval tv);
 long    convert_us_ms(long us);
 void    create_threads(t_curph philosophers[], int num_of_phil);
 void    *death_checker(void *phil_void);
@@ -68,7 +72,7 @@ void    init_philosophers(t_curph philosophers[], t_philo *ph_struct, void *thre
 int     parser(int argc, char *argv[], void *mem[], t_philo *ph_struct);
 int     ph_atoi(const char *str);
 void    *phil_live(void *phil_void);
-void    reset_death(struct timeval *tv, int time_to_die, pthread_mutex_t *ph_mutex);
+void    reset_death(struct timeval *tv, int time_to_die, pthread_mutex_t *death, t_curph *phil);
 void    set_end_of_simulation(t_philo *ph_struct);
 int     timeval_cmp(struct timeval now, t_curph *phil);
 

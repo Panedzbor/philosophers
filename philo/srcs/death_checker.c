@@ -26,7 +26,7 @@ void *death_checker(void *phil_void)
             }
             i++;
         }
-        //usleep(500);
+        //usleep(100);
     }
     end_simulation(philosophers);
     mutex_print(END, philosophers);

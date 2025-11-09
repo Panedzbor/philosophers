@@ -4,17 +4,17 @@ int get_meals(t_curph *phil)
 {
     int meals;
 
-    pthread_mutex_lock(&phil->ph_mutex);
+    pthread_mutex_lock(&phil->mutx_meals);
     meals = phil->meals;
-    pthread_mutex_unlock(&phil->ph_mutex);
+    pthread_mutex_unlock(&phil->mutx_meals);
     return (meals);
 }
 
 void increment_meals(t_curph *phil)
 {
-    pthread_mutex_lock(&phil->ph_mutex);
+    pthread_mutex_lock(&phil->mutx_meals);
     (phil->meals)++;
-    pthread_mutex_unlock(&phil->ph_mutex);
+    pthread_mutex_unlock(&phil->mutx_meals);
 }
 
 bool get_eos(t_philo *ph_struct)
@@ -37,21 +37,33 @@ void set_end_of_simulation(t_philo *ph_struct)
 void mutex_print(t_print message_type, t_curph *phil)
 {
     const char *string;
+    long timestamp;
+    long death_time;
+    struct timeval dt;
 
     if (message_type == FORK)
-        string = "has taken a fork\n";
+        string = "has taken a fork";
     else if (message_type == EAT)
-        string = "is eating\n";
+        string = "is eating";
     else if (message_type == SLEEP)
-        string = "is sleeping\n";
+        string = "is sleeping";
     else if (message_type == THINK)
-        string = "is thinking\n";
+        string = "is thinking";
     else if (message_type == DIE)
-        string = "died\n";
+        string = "died";
+    timestamp = generate_timestamp(phil);
+
+    pthread_mutex_lock(&phil->mutx_death);
+    dt = phil->death;
+    pthread_mutex_unlock(&phil->mutx_death);
+
+    death_time = convert_timeval_ms(dt) - convert_timeval_ms(phil->ph_struct->start);
     pthread_mutex_lock(&phil->ph_struct->print);
     if (message_type == END)
         printf("End of simulation: philosophers go partying 🥳\n");
-    else
-        printf("%04ld %d %s", generate_timestamp(phil), phil->id, string);
+    else/* {
+        write(1, string, 5);
+        write(1, "\n", 1);} */
+        printf("%04ld %d %s | death time: %ld\n", timestamp, phil->id, string, death_time);
     pthread_mutex_unlock(&phil->ph_struct->print);
 }
