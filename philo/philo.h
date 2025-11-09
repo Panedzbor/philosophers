@@ -21,7 +21,7 @@ typedef struct s_philo
     pthread_mutex_t eos;
     pthread_mutex_t *forks;
     pthread_mutex_t print;
-    pthread_t       death_check;
+    //pthread_t       death_check;
     struct timeval  start;
 } t_philo;
 
@@ -65,7 +65,7 @@ int     get_meals(t_curph *phil);
 void    increment_meals(t_curph *phil);
 t_curph *mem_allocator(int *args, t_philo *ph_struct, void *mem[]);
 void    *mem_cleaner(void *mem[]);
-void    mutex_print(t_print message_type, t_curph *phil);
+void    mutex_print(struct timeval time_tv, t_print message_type, t_curph *phil);
 void    init_forks(pthread_mutex_t *forks, int number_of_philosophers);
 void    init_mem(void *mem[]);
 void    init_philosophers(t_curph philosophers[], t_philo *ph_struct, void *threads);

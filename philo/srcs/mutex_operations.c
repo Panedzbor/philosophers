@@ -34,7 +34,7 @@ void set_end_of_simulation(t_philo *ph_struct)
     pthread_mutex_unlock(&ph_struct->eos);
 }
 
-void mutex_print(t_print message_type, t_curph *phil)
+void mutex_print(struct timeval time_tv, t_print message_type, t_curph *phil)
 {
     const char *string;
     long timestamp;
@@ -51,13 +51,18 @@ void mutex_print(t_print message_type, t_curph *phil)
         string = "is thinking";
     else if (message_type == DIE)
         string = "died";
-    timestamp = generate_timestamp(phil);
+    //timestamp = generate_timestamp(phil);
 
+    //test // or no?
     pthread_mutex_lock(&phil->mutx_death);
     dt = phil->death;
     pthread_mutex_unlock(&phil->mutx_death);
-
     death_time = convert_timeval_ms(dt) - convert_timeval_ms(phil->ph_struct->start);
+    //test
+
+    timestamp = convert_timeval_ms(time_tv) - convert_timeval_ms(phil->ph_struct->start);
+    /* if (message_type == DIE)
+        timestamp = death_time; */
     pthread_mutex_lock(&phil->ph_struct->print);
     if (message_type == END)
         printf("End of simulation: philosophers go partying 🥳\n");
