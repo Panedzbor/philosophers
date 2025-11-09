@@ -15,7 +15,7 @@
 
 typedef struct s_philo
 {
-    bool            end_of_simulation;//mutex
+    bool            end_of_simulation;
     int             *args;
     int             argc;
     pthread_mutex_t eos;
@@ -25,41 +25,26 @@ typedef struct s_philo
     struct timeval  start;
 } t_philo;
 
-typedef enum e_next_action
-{
-    EAT,
-    SLEEP,
-    THINK
-} t_action;
-
 typedef enum e_print_message
 {
     FORK,
-    EATS,
-    SLEEPS,
-    THINKS,
+    EAT,
+    SLEEP,
+    THINK,
     DIE,
     END
 } t_print;
 
-/* typedef enum e_status
-{
-    ALIVE,
-    DEAD
-} t_status; */
-
 typedef struct s_current_philo
 {
     int             id;
-    int             meals;//mutex
+    int             meals;
     int             lfork;
     int             rfork;
     pthread_mutex_t ph_mutex;
     pthread_t       *thread;
-    struct timeval  death;//mutex
-    t_action        next_action;//remove
+    struct timeval  death;
     t_philo         *ph_struct;
-    //t_status        status;
 } t_curph;
 
 long    convert_ms_us(long ms);
@@ -71,15 +56,20 @@ void    destroy_mutexes(t_curph *phil);
 void    finish_threads(t_curph phil[]);
 void    ft_putstr_fd(char *s, int fd);
 long    generate_timestamp(t_curph *phil);
+bool    get_eos(t_philo *ph_struct);
+int     get_meals(t_curph *phil);
+void    increment_meals(t_curph *phil);
 t_curph *mem_allocator(int *args, t_philo *ph_struct, void *mem[]);
 void    *mem_cleaner(void *mem[]);
-void    init_locks(pthread_mutex_t *forks, int number_of_philosophers);
+void    mutex_print(t_print message_type, t_curph *phil);
+void    init_forks(pthread_mutex_t *forks, int number_of_philosophers);
 void    init_mem(void *mem[]);
 void    init_philosophers(t_curph philosophers[], t_philo *ph_struct, void *threads);
 int     parser(int argc, char *argv[], void *mem[], t_philo *ph_struct);
 int     ph_atoi(const char *str);
 void    *phil_live(void *phil_void);
 void    reset_death(struct timeval *tv, int time_to_die, pthread_mutex_t *ph_mutex);
+void    set_end_of_simulation(t_philo *ph_struct);
 int     timeval_cmp(struct timeval now, t_curph *phil);
 
 #endif

@@ -44,7 +44,7 @@ static bool all_fed_up(t_curph philosophers[], int number_of_philosophers)
     i = 0;
     while (i < number_of_philosophers)
     {
-        if (get_meals(philosophers[i]) < meals_to_eat)
+        if (get_meals(&philosophers[i]) < meals_to_eat)
             return (false);
         i++;
     }

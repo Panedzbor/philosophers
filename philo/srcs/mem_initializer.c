@@ -12,7 +12,7 @@ void init_mem(void *mem[])
     }
 }
 
-void    init_locks(pthread_mutex_t *forks, int number_of_philosophers)
+void    init_forks(pthread_mutex_t *forks, int number_of_philosophers)
 {
     int i;
 
