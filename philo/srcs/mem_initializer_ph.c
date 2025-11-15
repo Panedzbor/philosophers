@@ -14,10 +14,9 @@ void    init_philosophers(t_curph philosophers[], t_philo *ph_struct, void *thre
     {
         philosophers[i].id = i + 1;
         philosophers[i].meals = 0;
+        philosophers[i].fed_up = false;
         philosophers[i].thread = &((pthread_t *)threads)[i];
         philosophers[i].ph_struct = ph_struct;
-        /* philosophers[i].last_meal.tv_sec = 0;//refactor
-        philosophers[i].last_meal.tv_usec = 0;//refactor */
         philosophers[i].last_meal = ph_struct->start;
         define_forks(&philosophers[i], number_of_philosophers);
         define_death_time(&philosophers[i]);

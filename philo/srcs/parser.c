@@ -11,6 +11,8 @@ int parser(int argc, char *argv[], void *mem[], t_philo *ph_struct)
         return (0);
     ph_struct->argc = argc - 1;
     ph_struct->end_of_simulation = false;
+    ph_struct->dead_id = 0;
+    pthread_mutex_init(&ph_struct->did, NULL);
     pthread_mutex_init(&ph_struct->eos, NULL);
     pthread_mutex_init(&ph_struct->print, NULL);
     return (1);
@@ -45,7 +47,7 @@ static int    *validate_input(int argc, char *argv[], void *mem[])
         temp = ph_atoi(argv[i]);
         if (temp < 0)
         {
-            ft_putstr_fd("Invalid input: negative or non-numeric values\n", 
+            ft_putstr_fd("Invalid input: negative or non-numeric values\n",
                 STDERR_FILENO);
             mem_cleaner(mem);
             return (NULL);

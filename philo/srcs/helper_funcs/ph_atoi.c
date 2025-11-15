@@ -1,5 +1,3 @@
-
-
 #include "../../philo.h"
 
 static int	substract(const char *str, int start, int end);

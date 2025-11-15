@@ -15,7 +15,6 @@ int main(int argc, char *argv[])
     init_forks(ph_struct.forks, ph_struct.args[0]);
     init_philosophers(philosophers, &ph_struct, mem[1]);
     create_threads(philosophers, ph_struct.args[0]);
-    //pthread_join(ph_struct.death_check, NULL);
     finish_threads(philosophers);
     destroy_mutexes(philosophers);
     mem_cleaner(mem);
