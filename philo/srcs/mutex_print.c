@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   mutex_print.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: earutiun <earutiun@student.42berlin.d      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/11/15 17:47:51 by earutiun          #+#    #+#             */
+/*   Updated: 2025/11/15 17:47:53 by earutiun         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../philo.h"
 
 static void	mutex_print_out(long timestamp, const char *string,
@@ -8,8 +20,6 @@ void	mutex_print_prepare(struct timeval time_tv,
 {
 	const char		*string;
 	long			timestamp;
-	long			death_time;
-	struct timeval	dt;
 
 	if (message_type == FORK)
 		string = "has taken a fork";

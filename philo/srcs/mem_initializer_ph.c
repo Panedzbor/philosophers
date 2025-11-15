@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   mem_initializer_ph.c                               :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: earutiun <earutiun@student.42berlin.d      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/11/15 17:47:28 by earutiun          #+#    #+#             */
+/*   Updated: 2025/11/15 17:47:31 by earutiun         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../philo.h"
 
 static void	define_forks(t_curph *philosopher, int number_of_philosophers);
@@ -19,11 +31,12 @@ void	init_philosophers(
 		philosophers[i].thread = &((pthread_t *)threads)[i];
 		philosophers[i].ph_struct = ph_struct;
 		philosophers[i].last_meal = ph_struct->start;
-		define_forks(&philosophers[i], number_of_philosophers);
-		define_death_time(&philosophers[i]);
+		philosophers[i].death = ph_struct->start;
 		pthread_mutex_init(&philosophers[i].mutx_meals, NULL);
 		pthread_mutex_init(&philosophers[i].mutx_death, NULL);
 		pthread_mutex_init(&philosophers[i].mutx_last_meal, NULL);
+		define_forks(&philosophers[i], number_of_philosophers);
+		define_death_time(&philosophers[i]);
 		i++;
 	}
 }
