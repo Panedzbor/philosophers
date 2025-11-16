@@ -40,4 +40,6 @@ void	destroy_mutexes(t_curph *phil)
 	}
 	pthread_mutex_destroy(&phil->ph_struct->eos);
 	pthread_mutex_destroy(&phil->ph_struct->print);
+	pthread_mutex_destroy(&phil->ph_struct->did);
+	pthread_mutex_destroy(&phil->ph_struct->dpr);
 }

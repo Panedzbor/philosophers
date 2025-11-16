@@ -78,3 +78,9 @@ bool	all_fed_up(t_curph *phil, int id, int meals_to_end)
 	mutex_print_prepare(now, END, phil);
 	return (true);
 }
+
+void	putaway_forks(t_curph *phil)
+{
+	pthread_mutex_unlock(&phil->ph_struct->forks[phil->rfork]);
+	pthread_mutex_unlock(&phil->ph_struct->forks[phil->lfork]);
+}

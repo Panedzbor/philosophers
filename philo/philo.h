@@ -30,7 +30,10 @@ typedef struct s_philo
 	int				*args;
 	int				argc;
 	int				dead_id;
+	int				dieprint;
+	pthread_t		monitor;
 	pthread_mutex_t	did;
+	pthread_mutex_t dpr;
 	pthread_mutex_t	eos;
 	pthread_mutex_t	*forks;
 	pthread_mutex_t	print;
@@ -73,6 +76,7 @@ long long	convert_timeval_ms(struct timeval tv);
 long		convert_us_ms(long us);
 void		create_threads(t_curph philosophers[], int num_of_phil);
 bool		death_check(struct timeval tv, t_curph *phil);
+void		*death_monitor(void *phil_void);
 void		destroy_mutexes(t_curph *phil);
 void		finish_threads(t_curph phil[]);
 int			ft_isdigit(int c);
@@ -93,6 +97,7 @@ int			parser(int argc, char *argv[], void *mem[], t_philo *ph_struct);
 int			ph_atoi(const char *str);
 void		ph_sleep(long ms);
 void		*phil_live(void *phil_void);
+void		putaway_forks(t_curph *phil);
 void		reset_death(struct timeval *tv, int time_to_die,
 				pthread_mutex_t *death, t_curph *phil);
 void		set_end_of_simulation(t_curph *phil);

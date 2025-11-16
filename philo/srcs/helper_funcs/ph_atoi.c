@@ -102,6 +102,6 @@ static int	only_numeric(const char *str, int *end)
 	}
 	if (i == 0)
 		return (0);
-	*end = i;
+	*end = i - 1;
 	return (1);
 }

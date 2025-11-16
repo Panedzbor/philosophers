@@ -35,6 +35,8 @@ void	*phil_live(void *phil_void)
 		phil_take_forks(phil);
 		if (!get_eos(phil->ph_struct))
 			phil_eat(phil, meals_to_end);
+		else
+			putaway_forks(phil);
 		if (!get_eos(phil->ph_struct))
 			phil_sleep(phil);
 		if (!get_eos(phil->ph_struct))
@@ -56,13 +58,14 @@ static bool	phil_take_forks(t_curph *phil)
 	else
 	{
 		set_end_of_simulation(phil);
-		mutex_print_prepare(now, DIE, phil);
+		//mutex_print_prepare(now, DIE, phil);
 		pthread_mutex_unlock(&phil->ph_struct->forks[phil->rfork]);
 		return (true);
 	}
 	if (number_of_philosophers <= 1)
 	{
 		simulate_alone_phil(phil);
+		pthread_mutex_unlock(&phil->ph_struct->forks[phil->rfork]);
 		return (true);
 	}
 	pthread_mutex_lock(&phil->ph_struct->forks[phil->lfork]);
@@ -81,7 +84,7 @@ static bool	phil_eat(t_curph *phil, int meals_to_end)
 	if (!death_check(meal_time, phil))
 	{
 		set_end_of_simulation(phil);
-		mutex_print_prepare(meal_time, DIE, phil);
+		//mutex_print_prepare(meal_time, DIE, phil);
 		return (true);
 	}
 	pthread_mutex_lock(&phil->mutx_last_meal);
@@ -109,7 +112,7 @@ static bool	phil_sleep(t_curph *phil)
 		return (false);
 	}
 	set_end_of_simulation(phil);
-	mutex_print_prepare(now, DIE, phil);
+	//mutex_print_prepare(now, DIE, phil);
 	return (true);
 }
 
@@ -124,6 +127,6 @@ static bool	phil_think(t_curph *phil)
 		return (false);
 	}
 	set_end_of_simulation(phil);
-	mutex_print_prepare(now, DIE, phil);
+	//mutex_print_prepare(now, DIE, phil);
 	return (true);
 }
