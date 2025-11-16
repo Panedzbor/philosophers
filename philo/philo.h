@@ -84,6 +84,7 @@ void		ft_putstr_fd(char *s, int fd);
 long		generate_timestamp(t_curph *phil);
 bool		get_eos(t_philo *ph_struct);
 int			get_meals(t_curph *phil);
+int			get_mte_value(t_curph *phil);
 void		increment_meals(t_curph *phil);
 t_curph		*mem_allocator(int *args, t_philo *ph_struct, void *mem[]);
 void		*mem_cleaner(void *mem[]);
@@ -97,7 +98,7 @@ int			parser(int argc, char *argv[], void *mem[], t_philo *ph_struct);
 int			ph_atoi(const char *str);
 void		ph_sleep(long ms);
 void		*phil_live(void *phil_void);
-void		putaway_forks(t_curph *phil);
+void		putaway_forks(t_curph *phil, bool forks_taken);
 void		reset_death(struct timeval *tv, int time_to_die,
 				pthread_mutex_t *death, t_curph *phil);
 void		set_end_of_simulation(t_curph *phil);
