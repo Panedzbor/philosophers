@@ -75,6 +75,7 @@ void		create_threads(t_curph philosophers[], int num_of_phil);
 bool		death_check(struct timeval tv, t_curph *phil);
 void		destroy_mutexes(t_curph *phil);
 void		finish_threads(t_curph phil[]);
+int			ft_isdigit(int c);
 void		ft_putstr_fd(char *s, int fd);
 long		generate_timestamp(t_curph *phil);
 bool		get_eos(t_philo *ph_struct);

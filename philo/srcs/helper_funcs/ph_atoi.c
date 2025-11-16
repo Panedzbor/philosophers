@@ -14,8 +14,8 @@
 
 static int	substract(const char *str, int start, int end);
 static int	add(const char *str, int start, int end);
-static void	check_input(const char *str, int *start, int *end, int *negative);
-static int	ft_isdigit(int c);
+static void	skip_starting_spaces(const char *str, int *start, int *negative);
+static int	only_numeric(const char *str, int *end);
 
 int	ph_atoi(const char *str)
 {
@@ -29,8 +29,8 @@ int	ph_atoi(const char *str)
 	negative = 0;
 	if (!str)
 		return (0);
-	check_input(str, &start, &end, &negative);
-	if (!(ft_isdigit(str[start])))
+	skip_starting_spaces(str, &start, &negative);
+	if (!(only_numeric(&str[start], &end)))
 		return (-1);
 	if (negative == 1)
 		num = substract(str, start, end);
@@ -39,7 +39,7 @@ int	ph_atoi(const char *str)
 	return (num);
 }
 
-static void	check_input(const char *str, int *start, int *end, int *negative)
+static void	skip_starting_spaces(const char *str, int *start, int *negative)
 {
 	int	i;
 
@@ -55,10 +55,6 @@ static void	check_input(const char *str, int *start, int *end, int *negative)
 	else if (str[i] == '+')
 		i++;
 	*start = i;
-	while (str[i] >= '0' && str[i] <= '9')
-		i++;
-	if (i > 0)
-		*end = i - 1;
 }
 
 static int	substract(const char *str, int start, int end)
@@ -93,10 +89,19 @@ static int	add(const char *str, int start, int end)
 	return (num);
 }
 
-static int	ft_isdigit(int c)
+static int	only_numeric(const char *str, int *end)
 {
-	if (c >= '0' && c <= '9')
-		return (1);
-	else
+	int	i;
+
+	i = 0;
+	while (str[i])
+	{
+		if (!ft_isdigit(str[i]))
+			return (0);
+		i++;
+	}
+	if (i == 0)
 		return (0);
+	*end = i;
+	return (1);
 }
