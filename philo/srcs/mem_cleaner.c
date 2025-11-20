@@ -33,9 +33,9 @@ void	destroy_mutexes(t_curph *phil)
 	while (i < phil->ph_struct->args[0])
 	{
 		pthread_mutex_destroy(&phil->ph_struct->forks[i]);
-		pthread_mutex_destroy(&phil->mutx_meals);
-		pthread_mutex_destroy(&phil->mutx_death);
-		pthread_mutex_destroy(&phil->mutx_last_meal);
+		pthread_mutex_destroy(&phil[i].mutx_meals);
+		pthread_mutex_destroy(&phil[i].mutx_death);
+		pthread_mutex_destroy(&phil[i].mutx_last_meal);
 		i++;
 	}
 	pthread_mutex_destroy(&phil->ph_struct->eos);

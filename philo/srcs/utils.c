@@ -83,6 +83,6 @@ void	putaway_forks(t_curph *phil, bool forks_taken)
 {
 	if (!forks_taken)
 		return ;
-	pthread_mutex_unlock(&phil->ph_struct->forks[phil->rfork]);
-	pthread_mutex_unlock(&phil->ph_struct->forks[phil->lfork]);
+	pthread_mutex_unlock(&phil->ph_struct->forks[phil->sfork]);
+	pthread_mutex_unlock(&phil->ph_struct->forks[phil->bfork]);
 }

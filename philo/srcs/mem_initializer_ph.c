@@ -47,6 +47,13 @@ static void	define_forks(t_curph *philosopher, int number_of_philosophers)
 	philosopher->lfork = philosopher->id;
 	if (philosopher->id == number_of_philosophers)
 		philosopher->lfork = 0;
+	philosopher->sfork = philosopher->rfork;
+	philosopher->bfork = philosopher->lfork;
+	if (philosopher->rfork > philosopher->lfork)
+	{
+		philosopher->sfork = philosopher->lfork;
+		philosopher->bfork = philosopher->rfork;
+	}
 }
 
 static void	define_death_time(t_curph *philosopher)

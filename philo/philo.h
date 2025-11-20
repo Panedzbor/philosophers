@@ -58,6 +58,8 @@ typedef struct s_current_philo
 	int				meals;
 	int				lfork;
 	int				rfork;
+	int	sfork;
+	int	bfork;
 	pthread_mutex_t	mutx_death;
 	pthread_mutex_t	mutx_meals;
 	pthread_mutex_t	mutx_last_meal;
