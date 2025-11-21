@@ -17,7 +17,8 @@ void	create_threads(t_curph philosophers[], int num_of_phil)
 	pthread_t	*thread;
 	int			i;
 
-	pthread_create(&philosophers->ph_struct->monitor, NULL, death_monitor, (void *)philosophers);
+	pthread_create(&philosophers->ph_struct->monitor, NULL, death_monitor,
+		(void *)philosophers);
 	i = 0;
 	while (i < num_of_phil)
 	{

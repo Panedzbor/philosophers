@@ -13,37 +13,34 @@
 #include "../philo.h"
 
 static bool	phil_take_forks(t_curph *phil);
-static bool	phil_eat(t_curph *phil/* , int meals_to_end */);
+static bool	phil_eat(t_curph *phil);
 static bool	phil_sleep(t_curph *phil);
 static bool	phil_think(t_curph *phil);
 
 void	*phil_live(void *phil_void)
 {
 	t_curph	*phil;
-	// int		meals_to_end;
 	int		time_to_eat;
 	bool	forks_taken;
-	bool	result = false;
+	bool	completed;
 
 	phil = (t_curph *)phil_void;
-	// meals_to_end = -1;
 	time_to_eat = phil->ph_struct->args[2];
-	/* if (phil->ph_struct->argc == 5)
-		meals_to_end = phil->ph_struct->args[4];//refactor */
+	completed = false;
 	if (phil->id % 2 == 0)
 		usleep(convert_ms_us(time_to_eat / 2));
 	while (!get_eos(phil->ph_struct))
 	{
 		forks_taken = phil_take_forks(phil);
 		if (!get_eos(phil->ph_struct) && forks_taken)
-			result = phil_eat(phil/* , meals_to_end */);
+			completed = phil_eat(phil);
 		else if (forks_taken)
 			putaway_forks(phil, forks_taken);
-		if (!get_eos(phil->ph_struct) && result)
-			result = phil_sleep(phil);
-		if (!get_eos(phil->ph_struct) && result)
-			result = phil_think(phil);
-		if (!result)
+		if (!get_eos(phil->ph_struct) && completed)
+			completed = phil_sleep(phil);
+		if (!get_eos(phil->ph_struct) && completed)
+			completed = phil_think(phil);
+		if (!completed)
 			break ;
 	}
 	return (NULL);
@@ -57,12 +54,10 @@ static bool	phil_take_forks(t_curph *phil)
 	number_of_philosophers = phil->ph_struct->args[0];
 	pthread_mutex_lock(&phil->ph_struct->forks[phil->rfork]);
 	gettimeofday(&now, NULL);
-	if (death_check(now, phil))
+	if (death_check_ph(now, phil))
 		mutex_print_prepare(now, FORK, phil);
 	else
 	{
-		//set_end_of_simulation(phil);
-		//mutex_print_prepare(now, DIE, phil);
 		pthread_mutex_unlock(&phil->ph_struct->forks[phil->rfork]);
 		return (false);
 	}
@@ -76,7 +71,7 @@ static bool	phil_take_forks(t_curph *phil)
 	return (true);
 }
 
-static bool	phil_eat(t_curph *phil/* , int meals_to_end */)
+static bool	phil_eat(t_curph *phil)
 {
 	long			time_to_eat;
 	long			time_to_die;
@@ -85,10 +80,8 @@ static bool	phil_eat(t_curph *phil/* , int meals_to_end */)
 	time_to_eat = phil->ph_struct->args[2];
 	time_to_die = phil->ph_struct->args[1];
 	gettimeofday(&meal_time, NULL);
-	if (!death_check(meal_time, phil))
+	if (!death_check_ph(meal_time, phil))
 	{
-		// set_end_of_simulation(phil);
-		//mutex_print_prepare(meal_time, DIE, phil);
 		putaway_forks(phil, true);
 		return (false);
 	}
@@ -101,7 +94,6 @@ static bool	phil_eat(t_curph *phil/* , int meals_to_end */)
 	pthread_mutex_unlock(&phil->ph_struct->forks[phil->rfork]);
 	pthread_mutex_unlock(&phil->ph_struct->forks[phil->lfork]);
 	increment_meals(phil);
-	//all_fed_up(phil, phil->id, meals_to_end);
 	return (true);
 }
 
@@ -110,14 +102,12 @@ static bool	phil_sleep(t_curph *phil)
 	struct timeval	now;
 
 	gettimeofday(&now, NULL);
-	if (death_check(now, phil))
+	if (death_check_ph(now, phil))
 	{
 		mutex_print_prepare(now, SLEEP, phil);
 		ph_sleep(phil->ph_struct->args[3]);
 		return (true);
 	}
-	// set_end_of_simulation(phil);
-	//mutex_print_prepare(now, DIE, phil);
 	return (false);
 }
 
@@ -126,12 +116,10 @@ static bool	phil_think(t_curph *phil)
 	struct timeval	now;
 
 	gettimeofday(&now, NULL);
-	if (death_check(now, phil))
+	if (death_check_ph(now, phil))
 	{
 		mutex_print_prepare(now, THINK, phil);
 		return (true);
 	}
-	// set_end_of_simulation(phil);
-	//mutex_print_prepare(now, DIE, phil);
 	return (false);
 }
